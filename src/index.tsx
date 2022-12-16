@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     element: <HandsContainer />,
   },
   {
-    path: 'slap',
+    path: 'slap-me',
     element: <SlapContainer />,
   },
   {
