@@ -13,8 +13,12 @@ import {
   lerp,
 } from '@mediapipe/drawing_utils';
 import './index.scss';
+import { SlapGame } from '../../helper/slap';
+import meImg from '../../assets/images/me.png';
+import { useSearchParams } from 'react-router-dom';
 
 const SlapContainer = () => {
+  const [searchParams] = useSearchParams();
   const [inputVideoReady, setInputVideoReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
@@ -22,11 +26,20 @@ const SlapContainer = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const gameState = useRef({
-    status: true,
-    points: 0,
-    lastRendered: null,
-  });
+  const gameState = useRef(new SlapGame());
+  const [status, setStatus] = useState(false);
+  const [faceNum, setFaceNum] = useState(gameState.current.maxActiveCells);
+  const [cellImgSrc, setCellImgSrc] = useState(
+    'https://www.nicepng.com/png/full/183-1834697_donald-duck-png-donald-duck-small-face.png'
+  );
+
+  useEffect(() => {
+    console.log(searchParams);
+    const t = searchParams.get('t');
+    if (t === 'm') {
+      setCellImgSrc(meImg);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!inputVideoReady) {
@@ -36,7 +49,10 @@ const SlapContainer = () => {
       console.log('rendering');
       contextRef.current = canvasRef.current.getContext('2d');
       const constraints = {
-        video: { width: { min: 1280 }, height: { min: 720 } },
+        video: {
+          width: { min: window.innerWidth },
+          height: { min: window.innerHeight },
+        },
       };
       navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
         if (inputVideoRef.current) {
@@ -75,40 +91,7 @@ const SlapContainer = () => {
 
   const drawGame = (multiHandLandmarks: NormalizedLandmarkListList) => {
     if (canvasRef.current && contextRef.current) {
-      const ctx = contextRef.current;
-      const grid = {
-        width: 4,
-        height: 4,
-        cell: 100,
-        lineColor: '#00FF00',
-      };
-
-      const startX = (canvasRef.current.width - grid.width * grid.cell) / 2;
-      const startY = 100;
-      ctx.beginPath();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = grid.lineColor;
-      for (let i = 0; i <= grid.width; i++) {
-        const x = startX + i * grid.cell;
-        ctx.moveTo(x, startY);
-        ctx.lineTo(x, startY + grid.cell * grid.height);
-      }
-      for (let i = 0; i <= grid.height; i++) {
-        const y = startY + i * grid.cell;
-        ctx.moveTo(startX, y);
-        ctx.lineTo(startX + grid.cell * grid.width, y);
-      }
-      ctx.stroke();
-
-      ctx.fillStyle = '#0ff';
-      ctx.fillRect(startX, startY / 2, 40, 20);
-
-      ctx.fillStyle = '#000';
-      ctx.fillText(
-        gameState.current.status ? 'Stop' : 'Start',
-        startX + 5,
-        startY / 2 + 15
-      );
+      gameState.current.drawGame(contextRef.current, multiHandLandmarks);
     }
   };
 
@@ -158,6 +141,10 @@ const SlapContainer = () => {
     }
   };
 
+  useEffect(() => {
+    gameState.current.maxActiveCells = faceNum;
+  }, [faceNum]);
+
   return (
     <div className="slap-container">
       <video
@@ -167,7 +154,37 @@ const SlapContainer = () => {
           setInputVideoReady(!!el);
         }}
       />
-      <canvas ref={canvasRef} width={1280} height={720} />
+      <canvas
+        ref={canvasRef}
+        width={window.innerWidth}
+        height={window.innerHeight}
+      />
+      {gameState.current && (
+        <>
+          <div className="game-controller">
+            <button
+              className="custom-btn btn-1"
+              onClick={() => {
+                setStatus(!status);
+                gameState.current.startGame(!status);
+              }}
+            >
+              <span>{status ? 'Stop' : 'Start'}</span>
+            </button>
+            <img src={cellImgSrc} alt="" id="cell-img-src" />
+            <div>
+              Faces:{' '}
+              <input
+                value={faceNum}
+                type="number"
+                onChange={(e) => {
+                  setFaceNum(parseInt(e.target.value) || 1);
+                }}
+              />
+            </div>
+          </div>
+        </>
+      )}
       {!loaded && (
         <div className="loading">
           <div className="spinner"></div>
