@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import HandsContainer from './components/Hands';
 import SlapContainer from './components/Slap';
+import PianoContainer from './components/Piano';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: 'slap-me',
     element: <SlapContainer />,
+  },
+  {
+    path: 'piano',
+    element: <PianoContainer />,
   },
   {
     path: 'about',

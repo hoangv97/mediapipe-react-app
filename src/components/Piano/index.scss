@@ -1,0 +1,153 @@
+.piano-container {
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  font-family: 'Titillium Web', sans-serif;
+  color: white;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  transform-origin: 0px 0px;
+  overflow: hidden;
+  background-color: #596e73;
+  width: 100%;
+  max-height: 100%;
+
+  video {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    &.selfie {
+      transform: scale(-1, 1);
+    }
+  }
+
+  canvas {
+    width: 100%;
+    display: block;
+    position: relative;
+    left: 0;
+    top: 0;
+  }
+
+  .control-panel {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+
+  .loading {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    align-items: center;
+    backface-visibility: hidden;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 1s;
+
+    .message {
+      font-size: x-large;
+    }
+
+    .spinner {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      animation: spin 1s linear infinite;
+      border: 32px solid #bebebe;
+      border-top: 32px solid #3498db;
+      border-radius: 50%;
+    }
+  }
+
+  .square-box {
+    width: 33%;
+    height: 0;
+    padding-top: 33%;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+  }
+
+  .landmark-grid-container {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #99999999;
+  }
+
+  .game-controller {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 20px;
+    align-items: center;
+
+    input[type='number'] {
+      width: 50px;
+    }
+
+    #cell-img-src {
+      display: none;
+    }
+
+    .custom-btn {
+      width: 130px;
+      height: 40px;
+      color: #fff;
+      border-radius: 5px;
+      padding: 10px 25px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 500;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      display: inline-block;
+      box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+        7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+      outline: none;
+    }
+
+    .btn-1 {
+      background: rgb(6, 14, 131);
+      background: linear-gradient(
+        0deg,
+        rgba(6, 14, 131, 1) 0%,
+        rgba(12, 25, 180, 1) 100%
+      );
+      border: none;
+    }
+    .btn-1:hover {
+      background: rgb(0, 3, 255);
+      background: linear-gradient(
+        0deg,
+        rgba(0, 3, 255, 1) 0%,
+        rgba(2, 126, 251, 1) 100%
+      );
+    }
+  }
+}
