@@ -7,11 +7,16 @@ import App from './App';
 import HandsContainer from './components/Hands';
 import SlapContainer from './components/Slap';
 import PianoContainer from './components/Piano';
+import vbContainer from './components/vb';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+  },
+  {
+    path: 'vb',
+    element: <vbContainer />,
   },
   {
     path: 'hands',
