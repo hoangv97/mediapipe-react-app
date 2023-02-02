@@ -8,7 +8,10 @@ function App() {
   const contextRef = useRef();
 
   useEffect(() => {
-    contextRef.current = canvasRef.current.getContext("2d");
+    const cc= canvasRef.current;
+    if(cc){
+      contextRef.current = cc.getContext("2d");
+    }
     const constraints = {
       video: { width: { min: 1280 }, height: { min: 720 } },
     };
