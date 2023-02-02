@@ -5,6 +5,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
+      <h1><a href="/vb" >Hands</a></h1>
       <h1><a href="/hands" >Hands</a></h1>
       <h1><a href="/slap-me" >Slap-me</a></h1>
       <h1><a href="/piano" >Piano</a></h1>
